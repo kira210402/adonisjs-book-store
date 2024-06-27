@@ -1,20 +1,19 @@
 import User from '#models/user'
 import { loginValidator, registerValidator } from '#validators/auth'
 import type { HttpContext } from '@adonisjs/core/http'
-import hash from '@adonisjs/core/services/hash'
+import { messages } from '@vinejs/vine/defaults'
+// import hash from '@adonisjs/core/services/hash'
 
 export default class AuthController {
   async login({ request, response }: HttpContext) {
     const data = request.only(['email', 'password'])
     const { email, password } = await loginValidator.validate(data)
-    // const user = await User.findBy('email', email)
-    // if (!user) response.abort('User not found!')
-    // const match = await hash.verify(user?.$attributes.password, password)
-    // if (!match) response.abort('Password not match!')
     const user = await User.verifyCredentials(email, password)
-    return {
-      messages: 'User logged in',
-    }
+    const token = await User.accessTokens.create(user)
+    return response.status(200).json({
+      messages: 'Login success!',
+      token: token.toJSON().token,
+    })
   }
 
   async register({ request, response }: HttpContext) {
@@ -28,9 +27,24 @@ export default class AuthController {
       response.abort('Username already exists')
     }
     const user = await User.create(data)
-    return {
-      messages: 'User registered',
+    return response.status(201).json({
+      messages: 'Register success!',
       user,
+    })
+  }
+
+  async logout({ auth }: HttpContext) {
+    const user = auth.user!
+    await User.accessTokens.delete(user, user.currentAccessToken.identifier)
+    return {
+      messages: 'logout success!',
+    }
+  }
+
+  async me({ auth }: HttpContext) {
+    const user = auth.check()
+    return {
+      user: auth.user,
     }
   }
 }

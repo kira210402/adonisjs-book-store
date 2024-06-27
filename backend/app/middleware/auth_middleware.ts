@@ -22,4 +22,19 @@ export default class AuthMiddleware {
     await ctx.auth.authenticateUsing(options.guards, { loginRoute: this.redirectTo })
     return next()
   }
+
+  // async handle(ctx: HttpContext, next: NextFn) {
+  //   const { auth } = ctx
+
+  //   if (!auth.isAuthenticated) {
+  //     return ctx.response.abort(
+  //       {
+  //         message: 'Unauthorized access',
+  //       },
+  //       401
+  //     )
+  //   }
+
+  //   return next()
+  // }
 }

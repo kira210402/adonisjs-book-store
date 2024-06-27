@@ -6,8 +6,11 @@ export default class BooksController {
   /**
    * Display a list of resource
    */
-  async index() {
-    return Book.all()
+  async index({ auth, pagination }: HttpContext) {
+    const { perPage, page } = pagination
+    if (auth.isAuthenticated) {
+      return Book.query().paginate(page, perPage)
+    }
   }
 
   /**

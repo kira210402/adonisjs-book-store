@@ -6,8 +6,9 @@ export default class UsersController {
   /**
    * Display a list of resource
    */
-  async index() {
-    return User.all()
+  async index({ pagination }: HttpContext) {
+    const { perPage, page } = pagination
+    return User.query().paginate(page, perPage)
   }
 
   /**
