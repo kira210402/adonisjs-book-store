@@ -15,10 +15,6 @@ export class BaseService<T extends LucidModel> {
 
     const { total } = result.getMeta()
 
-    console.log(total)
-    console.log('total/perpage', total / perPage)
-    console.log('page', page)
-
     // if (total / perPage < page) {
     //   throw new Error('Page is not available')
     // }

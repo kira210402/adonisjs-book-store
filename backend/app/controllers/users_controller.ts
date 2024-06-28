@@ -29,6 +29,15 @@ export default class UsersController {
   //   return user
   // }
 
+  async show({ params, response }: HttpContext) {
+    const user = await user_service.show(params.id)
+    return response.status(ResponseStatus.Ok).json({
+      statusCode: ResponseStatus.Ok,
+      messages: 'User detail',
+      data: user,
+    })
+  }
+
   // async update({ params, request }: HttpContext) {
   //   const user = await User.findOrFail(params.id)
   //   const data = request.only(['username', 'email', 'password'])
@@ -38,9 +47,26 @@ export default class UsersController {
   //   return user
   // }
 
+  async update({ params, request, response }: HttpContext) {
+    const user = await user_service.update(params.id, request.body())
+    return response.status(ResponseStatus.Ok).json({
+      statusCode: ResponseStatus.Ok,
+      messages: 'User updated',
+      data: user,
+    })
+  }
+
   // async destroy({ params }: HttpContext) {
   //   const user = await User.findOrFail(params.id)
   //   await user.delete()
   //   return null
   // }
+
+  async destroy({ params, response }: HttpContext) {
+    await user_service.destroy(params.id)
+    return response.status(ResponseStatus.Ok).json({
+      statusCode: ResponseStatus.Ok,
+      messages: 'User deleted',
+    })
+  }
 }

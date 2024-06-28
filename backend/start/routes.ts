@@ -41,10 +41,10 @@ router
         router
           .group(() => {
             router.get('/', [UsersController, 'index']).use(middleware.pagination())
-            // router.get('/:id', [UsersController, 'show'])
+            router.get('/:id', [UsersController, 'show'])
             // router.post('/', [UsersController, 'store'])
-            // router.put('/:id', [UsersController, 'update'])
-            // router.delete('/:id', [UsersController, 'destroy'])
+            router.put('/:id', [UsersController, 'update'])
+            router.delete('/:id', [UsersController, 'destroy'])
           })
           .prefix('/users')
       })
