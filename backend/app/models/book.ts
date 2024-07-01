@@ -9,10 +9,13 @@ export default class Book extends BaseModel {
   declare title: string
 
   @column()
-  declare author: string
+  declare authorId: number
 
   @column()
   declare price: number
+
+  @column()
+  declare description: string
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

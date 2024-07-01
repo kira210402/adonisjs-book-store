@@ -4,14 +4,12 @@ export default class extends BaseSchema {
   protected tableName = 'users'
 
   async up() {
-    this.schema.table(this.tableName, (table) => {
-      table.text('gender')
+    this.schema.alterTable(this.tableName, (table) => {
+      table.dropColumns('isAdmin', 'gender')
     })
   }
 
   async down() {
-    this.schema.table(this.tableName, (table) => {
-      table.dropColumn('gender')
-    })
+    this.schema.dropTable(this.tableName)
   }
 }

@@ -22,7 +22,7 @@ export default class BooksController {
    * Handle form submission for the create action
    */
   async store({ request }: HttpContext) {
-    const data = request.only(['title', 'author', 'price'])
+    const data = request.only(['title', 'authorId', 'price'])
     const payload = await createBookValidator.validate(data)
     return Book.create(payload)
   }
@@ -44,7 +44,7 @@ export default class BooksController {
    */
   async update({ params, request }: HttpContext) {
     const book = await Book.findOrFail(params.id)
-    const data = request.only(['title', 'author', 'price'])
+    const data = request.only(['title', 'authorId', 'price'])
     const payload = await updateBookValidator.validate(data)
     book.merge(payload)
     await book.save()

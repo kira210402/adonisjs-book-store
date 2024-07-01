@@ -12,6 +12,7 @@ const UsersController = () => import('#controllers/users_controller')
 const AuthController = () => import('#controllers/auth_controller')
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+import AuthorsController from '#controllers/authors_controller'
 
 router.where('id', router.matchers.number()) //define global cast for param id
 
@@ -47,6 +48,17 @@ router
             router.delete('/:id', [UsersController, 'destroy'])
           })
           .prefix('/users')
+
+        // authors router
+        router
+          .group(() => {
+            router.get('/', [AuthorsController, 'index']).use(middleware.pagination())
+            router.get('/:id', [AuthorsController, 'show'])
+            router.post('/', [AuthorsController, 'store'])
+            router.put('/:id', [AuthorsController, 'update'])
+            router.delete('/:id', [AuthorsController, 'destroy'])
+          })
+          .prefix('/authors')
       })
       .use(
         middleware.auth({
