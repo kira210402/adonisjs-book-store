@@ -22,8 +22,7 @@ router
     // auth router
     router.post('/login', [AuthController, 'login'])
     router.post('/register', [AuthController, 'register'])
-    router.delete('/logout', [AuthController, 'logout']).use(middleware.auth({ guards: ['api'] }))
-    router.get('/me', [AuthController, 'me'])
+    router.delete('/logout', [AuthController, 'logout']).use(middleware.auth({}))
 
     router
       .group(() => {
@@ -60,10 +59,6 @@ router
           })
           .prefix('/authors')
       })
-      .use(
-        middleware.auth({
-          guards: ['api'],
-        })
-      )
+      .use(middleware.auth({}))
   })
   .prefix('api/v1')
